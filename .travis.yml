@@ -1,5 +1,11 @@
 language: go
-
 go:
-  - 1.4
-  - tip
+- 1.4
+- tip
+deploy:
+  provider: releases
+  api_key:
+    secure: Mti5GV6CwYlJ+llfPOryRa9hRL5Fkt/R4UahN63VayH0ljMn7/7fV/pYrVYjs2M36oz5NlLbPjdfjHlldPIxeG+3fkgdghy38fobLSKFPVP19nEM8MIWFq1VgTfEnCF0MmiHlZuIqto/m4Dc2Uunwona/Fp+FBLwQHSaKSlhqfk=
+  file: snmpdate_1.0_amd64.deb
+  on:
+    repo: jamesandariese/snmpdate
