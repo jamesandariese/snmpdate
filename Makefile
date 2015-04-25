@@ -10,7 +10,7 @@ snmpdate: snmpdate.go
 	go build
 
 snmpdate.1.gz: README.md
-	gem install ronn
+	apt-get install ruby-ronn
 	grep -vE '^\[!\[Build Status\]' README.md | ronn |gzip -9> snmpdate.1.gz
 
 clean:
