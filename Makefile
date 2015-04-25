@@ -33,12 +33,23 @@ else
 PACKAGE_TYPE=
 endif
 
+
+
 ${PROJECT_NAME}${PACKAGE_TYPE}_${PACKAGE_VERSION}_amd64.deb: ${PROJECT_NAME} ${PROJECT_NAME}.1.gz
 	gem install fpm
-	mkdir -p usr/bin usr/share/man/man1
-	cp ${PROJECT_NAME} usr/bin
-	cp ${PROJECT_NAME}.1.gz usr/share/man/man1
-	fpm --description "${FPM_DESCRIPTION}" --url "${FPM_URL}" -s dir -t deb -n ${PROJECT_NAME}${PACKAGE_TYPE} -v ${PACKAGE_VERSION} usr
+	mkdir -p tmp/usr/bin tmp/usr/share/man/man1
+	cp ${PROJECT_NAME} tmp/usr/bin
+	cp ${PROJECT_NAME}.1.gz tmp/usr/share/man/man1
+	fpm --description "${FPM_DESCRIPTION}" --url "${FPM_URL}" -s dir -t deb -n ${PROJECT_NAME}${PACKAGE_TYPE} -v ${PACKAGE_VERSION} tmp/usr
+	rm -rf tmp
+
+${PROJECT_NAME}${PACKAGE_TYPE}-${PACKAGE_VERSION}-1.x86_64.rpm: ${PROJECT_NAME} ${PROJECT_NAME}.1.gz
+	gem install fpm
+	mkdir -p tmp/usr/bin tmp/usr/share/man/man1
+	cp ${PROJECT_NAME} tmp/usr/bin
+	cp ${PROJECT_NAME}.1.gz tmp/usr/share/man/man1
+	fpm --description "${FPM_DESCRIPTION}" --epoch 0 --url "${FPM_URL}" -s dir -t rpm -n ${PROJECT_NAME}${PACKAGE_TYPE} -v ${PACKAGE_VERSION} tmp/usr
+	rm -rf tmp
 
 ${PROJECT_NAME}: ${PROJECT_NAME}.go
 	go get
