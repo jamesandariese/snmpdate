@@ -5,13 +5,15 @@ snmpdate(1) -- SNMP date getter/comparator
 
 ## SYNOPSIS 
 
-`snmpdate` [-community="public"]
-[
-  [-nagios | -critical=0 | -warning=0]
-  | [-floatoffset | -offset]
-  | [-unix | -nano]
-  | [-format="2006-01-02 15:04:05 -0700"]
-]
+    `snmpdate`
+    [-community="public"]                     ; SNMPv2c community
+    [
+        [-nagios | -critical=0 | -warning=0]  ; nagios mode
+      | [-floatoffset | -offset]              ; offset mode
+      | [-unix | -nano]                       ; epoch mode
+      | [-format="2006-01-02 15:04:05 -0700"] ; standard date fetch mode (default)
+    ]
+    hostname | IP                             ; destination host
 
 ## DESCRIPTION
 
