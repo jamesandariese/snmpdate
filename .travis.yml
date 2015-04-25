@@ -1,6 +1,12 @@
 language: go
 go:
 - 1.4
+
+addons:
+  apt:
+    packages:
+    - rpm
+
 deploy:
   provider: releases
   api_key:
