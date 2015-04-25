@@ -10,11 +10,10 @@ snmpdate: snmpdate.go
 	go build
 
 snmpdate.1.gz: README.md
-	#ls -l `which gem | sed -e 's#\(^.*/\)[^/]*$$#\1gem*#'`
-	#gem2.2 install ronn
 	rvm install 2.2.2
 	rvm 2.2.2 do gem install ronn
 	grep -vE '^\[!\[Build Status\]' README.md | rvm 2.2.2 do ronn |gzip -9> snmpdate.1.gz
+	grep -vE '^\[!\[Build Status\]' README.md | rvm 2.2.2 do ronn -m | cat
 
 clean:
 	rm -f snmpdate snmpdate_*_amd64.deb
