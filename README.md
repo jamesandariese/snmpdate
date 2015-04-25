@@ -6,3 +6,5 @@ SNMP date getter/comparator
 * Print it in seconds since epoch
 * Offset mode for checking drift generically
 * Nagios mode for checking drift nagiosically
+
+[![Build Status](https://travis-ci.org/jamesandariese/snmpdate.svg?branch=master)](https://travis-ci.org/jamesandariese/snmpdate)
