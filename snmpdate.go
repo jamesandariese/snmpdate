@@ -2,12 +2,12 @@
 package main
 
 import (
-	"github.com/alouca/gosnmp"
-	"os"
-	"log"
-	"time"
-	"fmt"
 	"flag"
+	"fmt"
+	"github.com/alouca/gosnmp"
+	"log"
+	"os"
+	"time"
 )
 
 var community = flag.String("community", "public", "SNMP community to chat with")
@@ -28,14 +28,14 @@ func nagiosMode(t *time.Time) bool {
 	if *nagiosCritical == 0 && *nagiosWarning == 0 && !*nagios {
 		return false
 	}
-	
+
 	if t == nil {
 		fmt.Printf("UNKNOWN - timeout requesting time\n")
 		os.Exit(3)
-}
+	}
 
 	since := time.Since(*t)
-	
+
 	if *nagiosCritical > 0 && (since >= *nagiosCritical || -since >= *nagiosCritical) {
 		fmt.Printf("CRITICAL - time diff: %f\n", since.Seconds())
 		os.Exit(2)
@@ -82,21 +82,20 @@ func displayTime(t *time.Time) {
 	}
 
 	if *floatoffset {
- 		since := time.Since(*t)
+		since := time.Since(*t)
 		fmt.Println(since.Seconds())
 		os.Exit(0)
 	}
 
 	if *offset {
- 		since := time.Since(*t)
-		fmt.Println(since/time.Second)
+		since := time.Since(*t)
+		fmt.Println(since / time.Second)
 		os.Exit(0)
 	}
 
 	fmt.Println(t.Format(*format))
 	os.Exit(0)
 }
-
 
 func main() {
 	flag.Parse()
@@ -125,16 +124,16 @@ func main() {
 				} else {
 					loc = time.FixedZone("", secondsFromUTC)
 				}
-					
+
 				t := time.Date(
-					int(bytes[0])*0x100 + int(bytes[1]), //year
-					time.Month(int(bytes[2])), //month
-					int(bytes[3]), //day
-					int(bytes[4]), //hour
-					int(bytes[5]), //minute
-					int(bytes[6]), //second
-					1000000000 * int(bytes[7]), //decisecond
-				loc)
+					int(bytes[0])*0x100+int(bytes[1]), //year
+					time.Month(int(bytes[2])),         //month
+					int(bytes[3]),                     //day
+					int(bytes[4]),                     //hour
+					int(bytes[5]),                     //minute
+					int(bytes[6]),                     //second
+					1000000000*int(bytes[7]),          //decisecond
+					loc)
 				t = t.UTC()
 				displayTime(&t)
 				return
