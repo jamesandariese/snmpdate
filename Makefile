@@ -29,27 +29,28 @@ PACKAGE_VERSION=$(shell echo "${TRAVIS_TAG}" | grep -oE '^v[0-9.]+$$' | cut -c 2
 ifeq (${PACKAGE_VERSION},)
 PACKAGE_TYPE=-dev
 PACKAGE_VERSION=${TRAVIS_BUILD_NUMBER}
+FPM_CONFLICTS=--conflicts ${PROJECT_NAME} --provides ${PROJECT_NAME}
 else
 PACKAGE_TYPE=
 endif
 
 
+ALL: 	${PROJECT_NAME}${PACKAGE_TYPE}_${PACKAGE_VERSION}_amd64.deb \
+	${PROJECT_NAME}${PACKAGE_TYPE}-${PACKAGE_VERSION}-1.x86_64.rpm
 
 ${PROJECT_NAME}${PACKAGE_TYPE}_${PACKAGE_VERSION}_amd64.deb: ${PROJECT_NAME} ${PROJECT_NAME}.1.gz
 	gem install fpm
-	mkdir -p tmp/usr/bin tmp/usr/share/man/man1
-	cp ${PROJECT_NAME} tmp/usr/bin
-	cp ${PROJECT_NAME}.1.gz tmp/usr/share/man/man1
-	fpm --description "${FPM_DESCRIPTION}" --url "${FPM_URL}" -s dir -t deb -n ${PROJECT_NAME}${PACKAGE_TYPE} -v ${PACKAGE_VERSION} tmp/usr
-	rm -rf tmp
+	mkdir -p build-deb/usr/bin build-deb/usr/share/man/man1
+	cp ${PROJECT_NAME} build-deb/usr/bin
+	cp ${PROJECT_NAME}.1.gz build-deb/usr/share/man/man1
+	fpm ${FPM_CONFLICTS} --description "${FPM_DESCRIPTION}" --url "${FPM_URL}" -s dir -t deb -n ${PROJECT_NAME}${PACKAGE_TYPE} -v ${PACKAGE_VERSION} -C build-deb .
 
 ${PROJECT_NAME}${PACKAGE_TYPE}-${PACKAGE_VERSION}-1.x86_64.rpm: ${PROJECT_NAME} ${PROJECT_NAME}.1.gz
 	gem install fpm
-	mkdir -p tmp/usr/bin tmp/usr/share/man/man1
-	cp ${PROJECT_NAME} tmp/usr/bin
-	cp ${PROJECT_NAME}.1.gz tmp/usr/share/man/man1
-	fpm --description "${FPM_DESCRIPTION}" --epoch 0 --url "${FPM_URL}" -s dir -t rpm -n ${PROJECT_NAME}${PACKAGE_TYPE} -v ${PACKAGE_VERSION} tmp/usr
-	rm -rf tmp
+	mkdir -p build-rpm/usr/bin build-rpm/usr/share/man/man1
+	cp ${PROJECT_NAME} build-rpm/usr/bin
+	cp ${PROJECT_NAME}.1.gz build-rpm/usr/share/man/man1
+	fpm ${FPM_CONFLICTS} --description "${FPM_DESCRIPTION}" --epoch 0 --url "${FPM_URL}" -s dir -t rpm -n ${PROJECT_NAME}${PACKAGE_TYPE} -v ${PACKAGE_VERSION} -C build-rpm .
 
 ${PROJECT_NAME}: ${PROJECT_NAME}.go
 	go get
@@ -62,4 +63,4 @@ ${PROJECT_NAME}.1.gz: README.md
 	grep -vE '^\[!\[Build Status\]' README.md | rvm 2.2.2 do ronn -m | cat
 
 clean:
-	rm -f ${PROJECT_NAME} ${PROJECT_NAME}.1.gz ${PROJECT_NAME}*.deb
+	rm -rf ${PROJECT_NAME} ${PROJECT_NAME}.1.gz ${PROJECT_NAME}*.deb ${PROJECT_NAME}*.rpm build-deb build-rpm

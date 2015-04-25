@@ -6,7 +6,7 @@ deploy:
   api_key:
     secure: Mti5GV6CwYlJ+llfPOryRa9hRL5Fkt/R4UahN63VayH0ljMn7/7fV/pYrVYjs2M36oz5NlLbPjdfjHlldPIxeG+3fkgdghy38fobLSKFPVP19nEM8MIWFq1VgTfEnCF0MmiHlZuIqto/m4Dc2Uunwona/Fp+FBLwQHSaKSlhqfk=
   file:
-    $(head -1 README.md | grep -o "^[^(]*")_$(echo $TRAVIS_TAG | grep -oE 'v[0-9.]+$' |cut -c 2- )_amd64.deb
-    $(head -1 README.md | grep -o "^[^(]*")-$(echo $TRAVIS_TAG | grep -oE 'v[0-9.]+$' |cut -c 2- )-1.x86_64.rpm
+    - "$(head -1 README.md | grep -o '^[^(]*')_$(echo $TRAVIS_TAG | grep -oE 'v[0-9.]+$' |cut -c 2- )_amd64.deb"
+    - "$(head -1 README.md | grep -o '^[^(]*')-$(echo $TRAVIS_TAG | grep -oE 'v[0-9.]+$' |cut -c 2- )-1.x86_64.rpm"
   on:
     tags: true
