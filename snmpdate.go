@@ -140,6 +140,5 @@ func main() {
 			}
 		}
 	}
-	fmt.Println(err)
 	displayTime(nil)
 }
