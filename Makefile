@@ -1,10 +1,16 @@
-snmpdate_1.1_amd64.deb: snmpdate
+snmpdate_1.1_amd64.deb: snmpdate snmpdate.1.gz
 	gem install fpm
-	fpm -s dir -t deb -n snmpdate --prefix /usr/bin -v 1.1 snmpdate
+	mkdir -p usr/bin usr/share/man/man1
+	cp snmpdate usr/bin
+	cp snmpdate.1.gz usr/share/man/man1
+	fpm -s dir -t deb -n snmpdate -v 1.1 usr
 
 snmpdate: snmpdate.go
 	go get
 	go build
+
+snmpdate.1.gz: README.md
+	grep -vE '^\[!\[Build Status\]' README.md | ronn |gzip -9> snmpdate.1.gz
 
 clean:
 	rm -f snmpdate snmpdate_*_amd64.deb
