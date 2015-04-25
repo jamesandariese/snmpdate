@@ -5,7 +5,7 @@ snmpdate(1) -- SNMP date getter/comparator
 
 ## SYNOPSIS 
 
-    `snmpdate`
+    snmpdate
     [-community="public"]                     ; SNMPv2c community
     [
         [-nagios | -critical=0 | -warning=0]  ; nagios mode
