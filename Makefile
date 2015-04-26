@@ -56,6 +56,12 @@ ${PROJECT_NAME}: ${PROJECT_NAME}.go
 	go get
 	go build
 
+${PROJECT_NAME}.darwin_amd64: ${PROJECT_NAME}.go
+	wget http://www.strudelline.net/goccdarwin-1.4.1.tar.gz
+	tar zxf goccdarwin-1.4.1.tar.gz
+	GOOS=darwin GOARCH=amd64 GOROOT=${PWD}/gosrc gosrc/bin/go get
+	GOOS=darwin GOARCH=amd64 GOROOT=${PWD}/gosrc gosrc/bin/go build -o ${PROJECT_NAME}.darwin_amd64
+
 ${PROJECT_NAME}.1.gz: README.md
 	rvm install 2.2.2
 	rvm 2.2.2 do gem install ronn
@@ -63,4 +69,4 @@ ${PROJECT_NAME}.1.gz: README.md
 	grep -vE '^\[!\[Build Status\]' README.md | rvm 2.2.2 do ronn -m | cat
 
 clean:
-	rm -rf ${PROJECT_NAME} ${PROJECT_NAME}.1.gz ${PROJECT_NAME}*.deb ${PROJECT_NAME}*.rpm build-deb build-rpm
+	rm -rf ${PROJECT_NAME} ${PROJECT_NAME}.1.gz ${PROJECT_NAME}*.deb ${PROJECT_NAME}*.rpm build-deb build-rpm rm -rf gosrc goccdarwin-1.4.1.tar.gz snmpdate.darwin_amd64
