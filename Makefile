@@ -35,7 +35,9 @@ PACKAGE_TYPE=
 endif
 
 
-ALL: 	${PROJECT_NAME}${PACKAGE_TYPE}_${PACKAGE_VERSION}_amd64.deb \
+ALL: 	${PROJECT_NAME}.1.gz \
+	${PROJECT_NAME}.darwin_amd64 \
+	${PROJECT_NAME}${PACKAGE_TYPE}_${PACKAGE_VERSION}_amd64.deb \
 	${PROJECT_NAME}${PACKAGE_TYPE}-${PACKAGE_VERSION}-1.x86_64.rpm
 
 ${PROJECT_NAME}${PACKAGE_TYPE}_${PACKAGE_VERSION}_amd64.deb: ${PROJECT_NAME} ${PROJECT_NAME}.1.gz
@@ -56,6 +58,9 @@ ${PROJECT_NAME}: ${PROJECT_NAME}.go
 	go get
 	go build
 
+${PROJECT_NAME}.darwin_amd64.gz: ${PROJECT_NAME}.darwin_amd64
+	gzip -9c < ${PROJECT_NAME}.darwin_amd64 > ${PROJECT_NAME}.darwin_amd64.gz
+
 ${PROJECT_NAME}.darwin_amd64: ${PROJECT_NAME}.go
 	wget http://www.strudelline.net/goccdarwin-1.4.1.tar.gz
 	tar zxf goccdarwin-1.4.1.tar.gz
@@ -69,4 +74,4 @@ ${PROJECT_NAME}.1.gz: README.md
 	grep -vE '^\[!\[Build Status\]' README.md | rvm 2.2.2 do ronn -m | cat
 
 clean:
-	rm -rf ${PROJECT_NAME} ${PROJECT_NAME}.1.gz ${PROJECT_NAME}*.deb ${PROJECT_NAME}*.rpm build-deb build-rpm rm -rf gosrc goccdarwin-1.4.1.tar.gz snmpdate.darwin_amd64
+	rm -rf ${PROJECT_NAME} ${PROJECT_NAME}.1.gz ${PROJECT_NAME}*.deb ${PROJECT_NAME}*.rpm build-deb build-rpm rm -rf gosrc goccdarwin-1.4.1.tar.gz ${PROJECT_NAME}.darwin_amd64 ${PROJECT_NAME}.darwin_amd64.gz

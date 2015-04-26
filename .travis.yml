@@ -14,5 +14,7 @@ deploy:
   file:
     - "$(head -1 README.md | grep -o '^[^(]*')_$(echo $TRAVIS_TAG | grep -oE 'v[0-9.]+$' |cut -c 2- )_amd64.deb"
     - "$(head -1 README.md | grep -o '^[^(]*')-$(echo $TRAVIS_TAG | grep -oE 'v[0-9.]+$' |cut -c 2- )-1.x86_64.rpm"
+    - "$(head -1 README.md | grep -o '^[^(]*').1.gz"
+    - "$(head -1 README.md | grep -o '^[^(]*').darwin_amd64.gz"
   on:
     tags: true
